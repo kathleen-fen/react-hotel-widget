@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import HotelWidget from './HotelWidget/HotelWidget';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <HotelWidget />
   </React.StrictMode>,
   document.getElementById('root')
 );

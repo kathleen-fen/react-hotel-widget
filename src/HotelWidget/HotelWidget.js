@@ -12,14 +12,13 @@ import './HotelWidget.scss'
 class HotelWidget extends React.Component {
       state = {
           fromDate: moment(),
-          toDate: moment(),
+          toDate: moment().add(1, 'days'),
           adultsCount: 1,
           childrenCount: 0,
           bookingList: [],
           loading: false
       }
 
-  listItems = this.state.loading ? (<Loader />) : this.state.bookingList.map((el, index) => (<BookingItem item={el} key={index}/>))
 
   adultsChangeHandler(target){
     let adultsCount = target.value
@@ -41,6 +40,15 @@ class HotelWidget extends React.Component {
     event.preventDefault()
   }
 
+  onChangeRange(start,end) {
+    this.setState({
+      ...this.setState,
+      fromDate: start,
+      toDate: end
+    })
+    console.log(this.state)
+  }
+
   getHotelInfo() {
     this.setState({
       ...this.state, loading: true
@@ -53,6 +61,7 @@ class HotelWidget extends React.Component {
         loading: false,
         bookingList: [...res]
       })  
+      console.log(this.state)
     }.bind(this))
     
     
@@ -62,7 +71,11 @@ class HotelWidget extends React.Component {
     return(
       <div className="h-container">
       <form onSubmit={this.submitHandler}>
-        <DateRange />
+        <DateRange 
+          fromDate={this.state.fromDate}
+          toDate={this.state.toDate}
+          onChangeRange={this.onChangeRange.bind(this)}
+        />
         
         <input type="number" name="adultsCount" value={this.state.adultsCount} onChange={event => {this.adultsChangeHandler(event.target)}}></input>
         <input type="number" name="childrenCount" value={this.state.childrenCount} onChange={event => {this.childrenChangeHandler(event.target)}}></input>

@@ -1,17 +1,91 @@
-import React, { useState } from 'react'
+import React from 'react'
 import JSONP from 'jsonp'
-import { DateRange } from 'react-date-range'
+import moment from 'moment'
 
 import BookingItem from './BookingItem/BookingItem'
 import Loader from './UI/Loader/Loader'
+import DateRange from './UI/DateRange/DateRange'
 
 import './HotelWidget.scss'
 
 
+class HotelWidget extends React.Component {
+      state = {
+          fromDate: moment(),
+          toDate: moment(),
+          adultsCount: 1,
+          childrenCount: 0,
+          bookingList: [],
+          loading: false
+      }
+
+  listItems = this.state.loading ? (<Loader />) : this.state.bookingList.map((el, index) => (<BookingItem item={el} key={index}/>))
+
+  adultsChangeHandler(target){
+    let adultsCount = target.value
+    this.setState({ 
+      ...this.state,
+      adultsCount
+     })
+    }
+    
+  childrenChangeHandler(target) {
+    let childrenCount = target.value
+    this.setState({ 
+      ...this.state,
+      childrenCount
+    })   
+  }  
+
+  submitHandler(event){
+    event.preventDefault()
+  }
+
+  getHotelInfo() {
+    this.setState({
+      ...this.state, loading: true
+    })
+    
+    
+    JSONP(`http://testapi.itur.pl/api.php?date_from=${this.state.fromDate}&date_to=${this.state.toDate}&nb_adults=${this.state.adultsCount}&nb_children=&${this.state.childrenCount}?callback`,function(err,res){
+      this.setState({
+        ...this.state,
+        loading: false,
+        bookingList: [...res]
+      })  
+    }.bind(this))
+    
+    
+}
+
+  render() {
+    return(
+      <div className="h-container">
+      <form onSubmit={this.submitHandler}>
+        <DateRange />
+        
+        <input type="number" name="adultsCount" value={this.state.adultsCount} onChange={event => {this.adultsChangeHandler(event.target)}}></input>
+        <input type="number" name="childrenCount" value={this.state.childrenCount} onChange={event => {this.childrenChangeHandler(event.target)}}></input>
+
+        <button onClick={() => {this.getHotelInfo()}}>Get</button>
+      </form>
+      
+      {this.state.loading ? (<Loader />) : this.state.bookingList.map((el,index) => {
+        return(
+          <BookingItem item={el} key={index}/>
+        )
+      })}
+    </div>
+    )
+    
+  }
+  
+}
 
 
 
-function HotelWidget() {
+
+/* function HotelWidget() {
   const [fromDate, setFromDate] = useState(new Date())
   const [toDate, setToDate] = useState(new Date())
   const [adultsCount, setAdultsCount] = useState(1)
@@ -25,10 +99,7 @@ function HotelWidget() {
     setAdultsCount(target.value)
   }
 
-  const getRange = () => {
-    console.log(fromDate.toUTCString().substring(0,11))
-    return `${fromDate.toUTCString().substring(0,11)}  -  ${toDate.toUTCString().substring(0,11)}`
-  }
+  
 
   const listItems = loading ? (<Loader />) : bookingList.map((el, index) => (<BookingItem item={el} key={index}/>))
 
@@ -38,12 +109,7 @@ function HotelWidget() {
     
   }
 
-  const handleSelect = (ranges) => {
-    setFromDate(ranges.selection.startDate)
-    setToDate(ranges.selection.endDate) 
-    console.log(ranges)
-    setRangeChoose(false)
-  }
+  
 
   const submitHandler = event => {
     event.preventDefault()
@@ -58,29 +124,14 @@ function HotelWidget() {
   console.log("err:", err)
   })}
 
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  }
-  const calendar = rangeChoose ? (<DateRange
-                        className="range-wrapper"
-                        months={2}
-                        minDate={new Date()}
-                        ranges={[selectionRange]}
-                        onChange={handleSelect}
-                        showMonthAndYearPickers={false}
-                      />) : null
+  
+  
   
   return (
     <div className="h-container">
       <form onSubmit={submitHandler}>
-      
-        <div onClick={() => setRangeChoose(!rangeChoose)} className="range">
-          <img src="calendar-alt-regular.svg" alt="calendar" />
-          <div className="range__text">{getRange()}</div>
-          {calendar}
-        </div>
+        <DateRange />
+        
         <input type="number" name="adultsCount" value={adultsCount} onChange={event => {adultsChangeHandler(event.target)}}></input>
         <input type="number" name="childrenCount" value={childrenCount} onChange={event => {childrenChangeHandler(event.target)}}></input>
 
@@ -89,7 +140,7 @@ function HotelWidget() {
       
       {listItems}
     </div>
-  )}
+  )} */
 
 
 export default HotelWidget

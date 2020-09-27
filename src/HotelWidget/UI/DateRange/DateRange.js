@@ -15,7 +15,7 @@ function DateRange(props) {
         }
         return false;
     };
-    console.log(props)
+  //  console.log(props)
     return (
         <div>
             <Space direction="vertical" size={12}>

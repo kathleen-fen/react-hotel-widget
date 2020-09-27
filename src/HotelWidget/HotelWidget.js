@@ -5,6 +5,7 @@ import moment from 'moment'
 import BookingItem from './BookingItem/BookingItem'
 import Loader from './UI/Loader/Loader'
 import DateRange from './UI/DateRange/DateRange'
+import Input from './UI/Input/Input'
 
 import './HotelWidget.scss'
 
@@ -20,8 +21,8 @@ class HotelWidget extends React.Component {
       }
 
 
-  adultsChangeHandler(target){
-    let str = target.value.toString()
+  adultsChangeHandler(val){
+    /* let str = target.value.toString()
     if (str.length === 0) {
       str = '1'
     }
@@ -32,21 +33,21 @@ class HotelWidget extends React.Component {
         str = str.substring(1)
       }
     }
-    target.value = str
-    let adultsCount = target.value
+    target.value = str */
+    let adultsCount = val
     this.setState({ 
       ...this.state,
       adultsCount
      })
     }
     
-  childrenChangeHandler(target) {
-    let str = target.value.toString()
+  childrenChangeHandler(val) {
+    /* let str = target.value.toString()
     if (str.length === 0) {
       str = '0'
     }
-    target.value = str
-    let childrenCount = target.value
+    target.value = str */
+    let childrenCount = val
     this.setState({ 
       ...this.state,
       childrenCount
@@ -54,9 +55,9 @@ class HotelWidget extends React.Component {
   } 
   
   onKeyPress(event) {
-
+    console.log(event.charCode)
     if (event.charCode===45 | event.charCode===101 | event.charCode===43 | event.charCode===46) {
-      console.log(event)
+      
       event.preventDefault()
     }
     
@@ -80,8 +81,8 @@ class HotelWidget extends React.Component {
       ...this.state, loading: true
     })
     
-    
-    JSONP(`http://testapi.itur.pl/api.php?date_from=${this.state.fromDate}&date_to=${this.state.toDate}&nb_adults=${this.state.adultsCount}&nb_children=&${this.state.childrenCount}?callback`,function(err,res){
+    console.log(`http://testapi.itur.pl/api.php?date_from=${this.state.fromDate.format().substring(0,10)}&date_to=${this.state.toDate.format().substring(0,10)}&nb_adults=${this.state.adultsCount}&nb_children=&${this.state.childrenCount}?callback`)
+    JSONP(`http://testapi.itur.pl/api.php?date_from=${this.state.fromDate.format().substring(0,10)}&date_to=${this.state.toDate.format().substring(0,10)}&nb_adults=${this.state.adultsCount}&nb_children=&${this.state.childrenCount}?callback`,function(err,res){
       this.setState({
         ...this.state,
         loading: false,
@@ -103,9 +104,26 @@ class HotelWidget extends React.Component {
           onChangeRange={this.onChangeRange.bind(this)}
         />
         
-        <input type="number" min={1} name="adultsCount"  value={this.state.adultsCount} onKeyPress={this.onKeyPress} onChange={event => {this.adultsChangeHandler(event.target)}}></input>
-        <input type="number" min={0} name="childrenCount" value={this.state.childrenCount} onKeyPress={this.onKeyPress} onChange={event => {this.childrenChangeHandler(event.target)}}></input>
+        {/* <input type="number" min={1} name="adultsCount"  value={this.state.adultsCount} onKeyPress={this.onKeyPress} onChange={event => {this.adultsChangeHandler(event.target)}}></input> */}
+        <Input 
+          type='number'
+          name='adultsCount'
+          min={1}
+          value={this.state.adultsCount}
+          zeroPrevent={true}
+          onChangeHandler={this.adultsChangeHandler.bind(this)}
+        />
+        {/* <input type="number" min={0} name="childrenCount" value={this.state.childrenCount} onKeyPress={this.onKeyPress} onChange={event => {this.childrenChangeHandler(event.target)}}></input> */}
        
+        <Input 
+          type='number'
+          name='childrenCount'
+          min={0}
+          value={this.state.childrenCount}
+          zeroPrevent={false}
+          onChangeHandler={this.childrenChangeHandler.bind(this)}
+        />
+
 
         <button disabled={!this.state.fromDate || !this.state.toDate || this.state.adultsCount<=0 || this.state.childrenCount<0} onClick={() => {this.getHotelInfo()}}>Get</button>
       </form>

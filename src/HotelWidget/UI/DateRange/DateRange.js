@@ -17,7 +17,7 @@ function DateRange(props) {
     };
   //  console.log(props)
     return (
-        <div>
+        <div className="dataRange">
             <Space direction="vertical" size={12}>
                 <RangePicker 
                     size="large"

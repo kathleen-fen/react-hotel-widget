@@ -11,58 +11,23 @@ import './HotelWidget.scss'
 
 
 class HotelWidget extends React.Component {
-      state = {
-          fromDate: moment(),
-          toDate: moment().add(1, 'days'),
-          adultsCount: 1,
-          childrenCount: 0,
-          bookingList: [],
-          loading: false
-      }
 
+    state = {
+      fromDate: moment(),
+      toDate: moment().add(1, 'days'),
+      adultsCount: 1,
+      childrenCount: 0,
+      bookingList: [],
+      loading: false
+    }
 
-  adultsChangeHandler(val){
-    /* let str = target.value.toString()
-    if (str.length === 0) {
-      str = '1'
-    }
-    if (str[0]==='0') {
-      if (str.length===1) {
-        str="1"
-      } else {
-        str = str.substring(1)
-      }
-    }
-    target.value = str */
-    let adultsCount = val
+  inputChangeHandler(val, name){
     this.setState({ 
       ...this.state,
-      adultsCount
+      [name]: val
      })
     }
     
-  childrenChangeHandler(val) {
-    /* let str = target.value.toString()
-    if (str.length === 0) {
-      str = '0'
-    }
-    target.value = str */
-    let childrenCount = val
-    this.setState({ 
-      ...this.state,
-      childrenCount
-    })   
-  } 
-  
-  onKeyPress(event) {
-    console.log(event.charCode)
-    if (event.charCode===45 | event.charCode===101 | event.charCode===43 | event.charCode===46) {
-      
-      event.preventDefault()
-    }
-    
-  }
-
   submitHandler(event){
     event.preventDefault()
   }
@@ -90,49 +55,44 @@ class HotelWidget extends React.Component {
       })  
       console.log(this.state)
     }.bind(this))
-    
-    
 }
 
   render() {
     return(
       <div className="h-container">
-      <form onSubmit={this.submitHandler}>
-        <DateRange 
-          fromDate={this.state.fromDate}
-          toDate={this.state.toDate}
-          onChangeRange={this.onChangeRange.bind(this)}
-        />
+        <div className="title">Please choose dates and guest information to see price</div>
+        <form onSubmit={this.submitHandler}>
+          <DateRange 
+            fromDate={this.state.fromDate}
+            toDate={this.state.toDate}
+            onChangeRange={this.onChangeRange.bind(this)}
+          />
+          <Input 
+            type='number'
+            name='adultsCount'
+            title='Adults'
+            min={1}
+            value={this.state.adultsCount}
+            zeroPrevent={true}
+            onChangeHandler={this.inputChangeHandler.bind(this)}
+          />
+          <Input 
+            type='number'
+            name='childrenCount'
+            title='Children'
+            min={0}
+            value={this.state.childrenCount}
+            zeroPrevent={false}
+            onChangeHandler={this.inputChangeHandler.bind(this)}
+          />
+          <button className="btn" disabled={!this.state.fromDate || !this.state.toDate || this.state.adultsCount<=0 || this.state.childrenCount<0} onClick={() => {this.getHotelInfo()}}>Search</button>
+        </form>
         
-        {/* <input type="number" min={1} name="adultsCount"  value={this.state.adultsCount} onKeyPress={this.onKeyPress} onChange={event => {this.adultsChangeHandler(event.target)}}></input> */}
-        <Input 
-          type='number'
-          name='adultsCount'
-          min={1}
-          value={this.state.adultsCount}
-          zeroPrevent={true}
-          onChangeHandler={this.adultsChangeHandler.bind(this)}
-        />
-        {/* <input type="number" min={0} name="childrenCount" value={this.state.childrenCount} onKeyPress={this.onKeyPress} onChange={event => {this.childrenChangeHandler(event.target)}}></input> */}
-       
-        <Input 
-          type='number'
-          name='childrenCount'
-          min={0}
-          value={this.state.childrenCount}
-          zeroPrevent={false}
-          onChangeHandler={this.childrenChangeHandler.bind(this)}
-        />
-
-
-        <button disabled={!this.state.fromDate || !this.state.toDate || this.state.adultsCount<=0 || this.state.childrenCount<0} onClick={() => {this.getHotelInfo()}}>Get</button>
-      </form>
-      
-      {this.state.loading ? (<Loader />) : this.state.bookingList.map((el,index) => {
-        return(
-          <BookingItem item={el} key={index}/>
-        )
-      })}
+        {this.state.loading ? (<Loader />) : this.state.bookingList.map((el,index) => {
+          return(
+            <BookingItem item={el} key={index}/>
+          )
+        })}
     </div>
     )
     

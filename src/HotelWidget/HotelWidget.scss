@@ -1,19 +1,29 @@
+$textColor: #888282;
+
 
 * {
     box-sizing: border-box;
+    font-family: Roboto;
 }
  
 .h-container {
     min-width: 250px;
-    max-width: 50%;
-    margin: 0 auto;
-    border-radius: 3px;
+    max-width: 500px;
+    margin: 10px auto;
+    border-radius: 5px;
     background: #e8e8e8;
     padding: 10px;
     font-family: 'Roboto', sans-serif;
+    .title {
+        text-align: center;
+        font-size: 17px;
+        padding: 10px;
+        color: $textColor;
+    }
     form {
         display: flex;
         justify-content: center;
+        align-items: center;
         flex-wrap: wrap;
     }
 }
@@ -25,30 +35,22 @@
 
 }
 
-.range {
-    position: relative;
-    &__text {
-        font-size: 15px;
-        text-align: center;
-    }
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-    max-width: 400px;
-    height: 30px;
-    padding: 5px;
+.btn {
+    height: 40px;
+    border: 2px solid #fff;
     border-radius: 5px;
-    border: 2px solid #ccc;
-    background: #fff;
-    img {
-        max-width: 15px;
-        display: block;
-        margin-right: 10px;
-    }
+    color: $textColor;
+    font-family:  Roboto;
+    font-weight: 700;
+    background-color: #ccc;
+    outline: thistle;
+    width: 100px;
+    margin: 10px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     &:hover {
-        border: 0;
         cursor: pointer;
     }
 }
+
+
+

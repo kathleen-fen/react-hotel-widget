@@ -1,0 +1,13 @@
+$main-color: #12bda5;
+$white-color: #ffffff;
+
+* {
+    box-sizing: border-box;
+    font-family: Roboto;
+}
+
+@mixin f-centered() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

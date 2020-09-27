@@ -37,8 +37,6 @@ function Input(props) {
                 {props.title}
             </div>
         </div>
-       
-        
     )
 }
 

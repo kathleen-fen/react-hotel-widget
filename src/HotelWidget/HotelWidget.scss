@@ -1,11 +1,5 @@
-$textColor: #888282;
+@import './base.scss';
 
-
-* {
-    box-sizing: border-box;
-    font-family: Roboto;
-}
- 
 .h-container {
     min-width: 250px;
     max-width: 500px;
@@ -17,13 +11,12 @@ $textColor: #888282;
     .title {
         text-align: center;
         font-size: 17px;
+        font-weight: 700;
         padding: 10px;
-        color: $textColor;
+        color: $main-color;
     }
     form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include f-centered();
         flex-wrap: wrap;
     }
 }
@@ -37,18 +30,33 @@ $textColor: #888282;
 
 .btn {
     height: 40px;
-    border: 2px solid #fff;
+    border: 2px solid $white-color;
     border-radius: 5px;
-    color: $textColor;
+    color: $white-color;
     font-family:  Roboto;
     font-weight: 700;
-    background-color: #ccc;
-    outline: thistle;
+    background-color: $main-color;
+    outline: $white-color;
     width: 100px;
     margin: 10px;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     &:hover {
         cursor: pointer;
+    }
+}
+
+.close {
+    font-size: 15px;
+    color: $main-color;
+    text-decoration: underline;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@media (max-width:435px) {
+    .h-container {
+        margin-top: 0;
     }
 }
 

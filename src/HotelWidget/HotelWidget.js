@@ -21,6 +21,18 @@ class HotelWidget extends React.Component {
 
 
   adultsChangeHandler(target){
+    let str = target.value.toString()
+    if (str.length === 0) {
+      str = '1'
+    }
+    if (str[0]==='0') {
+      if (str.length===1) {
+        str="1"
+      } else {
+        str = str.substring(1)
+      }
+    }
+    target.value = str
     let adultsCount = target.value
     this.setState({ 
       ...this.state,
@@ -29,12 +41,26 @@ class HotelWidget extends React.Component {
     }
     
   childrenChangeHandler(target) {
+    let str = target.value.toString()
+    if (str.length === 0) {
+      str = '0'
+    }
+    target.value = str
     let childrenCount = target.value
     this.setState({ 
       ...this.state,
       childrenCount
     })   
-  }  
+  } 
+  
+  onKeyPress(event) {
+
+    if (event.charCode===45 | event.charCode===101 | event.charCode===43 | event.charCode===46) {
+      console.log(event)
+      event.preventDefault()
+    }
+    
+  }
 
   submitHandler(event){
     event.preventDefault()
@@ -77,10 +103,11 @@ class HotelWidget extends React.Component {
           onChangeRange={this.onChangeRange.bind(this)}
         />
         
-        <input type="number" name="adultsCount" value={this.state.adultsCount} onChange={event => {this.adultsChangeHandler(event.target)}}></input>
-        <input type="number" name="childrenCount" value={this.state.childrenCount} onChange={event => {this.childrenChangeHandler(event.target)}}></input>
+        <input type="number" min={1} name="adultsCount"  value={this.state.adultsCount} onKeyPress={this.onKeyPress} onChange={event => {this.adultsChangeHandler(event.target)}}></input>
+        <input type="number" min={0} name="childrenCount" value={this.state.childrenCount} onKeyPress={this.onKeyPress} onChange={event => {this.childrenChangeHandler(event.target)}}></input>
+       
 
-        <button onClick={() => {this.getHotelInfo()}}>Get</button>
+        <button disabled={!this.state.fromDate || !this.state.toDate || this.state.adultsCount<=0 || this.state.childrenCount<0} onClick={() => {this.getHotelInfo()}}>Get</button>
       </form>
       
       {this.state.loading ? (<Loader />) : this.state.bookingList.map((el,index) => {

@@ -21,7 +21,7 @@ function DateRange(props) {
             <Space direction="vertical" size={12}>
                 <RangePicker 
                     size="large"
-                    allowEmpty={[true,true]}
+                    allowEmpty={[false,false]}
                   //  defaultValue={[props.fromDate, props.toDate]}
                     value={[props.fromDate, props.toDate]}
                     disabledDate={disabledDate}

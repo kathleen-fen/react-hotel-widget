@@ -17,7 +17,8 @@ class HotelWidget extends React.Component {
       adultsCount: 1,
       childrenCount: 0,
       bookingList: [],
-      loading: false
+      loading: false,
+      error: null
     }
 
   inputChangeHandler(val, name){
@@ -45,12 +46,24 @@ class HotelWidget extends React.Component {
       ...this.state, loading: true
     })
     JSONP(`http://testapi.itur.pl/api.php?date_from=${this.state.fromDate.format().substring(0,10)}&date_to=${this.state.toDate.format().substring(0,10)}&nb_adults=${this.state.adultsCount}&nb_children=&${this.state.childrenCount}?callback`,function(err,res){
-      this.setState({
-        ...this.state,
-        loading: false,
-        bookingList: [...res]
-      })  
-      console.log(this.state)
+      if (res) {
+        this.setState({
+          ...this.state,
+          loading: false,
+          bookingList: [...res],
+          error: null
+        })  
+      }
+      if (err) {
+        this.setState({
+          ...this.state,
+          bookingList: [],
+          loading: false,
+          error: "Access Denied"
+        })  
+      }
+    
+      
     }.bind(this))
   }
 
@@ -93,6 +106,7 @@ class HotelWidget extends React.Component {
         </form>
 
         {(this.state.bookingList.length > 0) ? (<div className="close" onClick={this.closeList.bind(this)}>Close</div>) : null}
+        {!!this.state.error ? (<div className="error">{this.state.error}</div>): null}
         
         
         {this.state.loading ? (<Loader />) : this.state.bookingList.map((el,index) => {

@@ -22,6 +22,14 @@
     }
 }
 
+@media (max-width:830px) {
+    .ant-picker-panels {
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
 @media (max-width:435px) {
     .dataRange {
         .ant-picker {

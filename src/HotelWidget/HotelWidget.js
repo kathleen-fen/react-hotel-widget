@@ -38,7 +38,6 @@ class HotelWidget extends React.Component {
       fromDate: start,
       toDate: end
     })
-    console.log(this.state)
   }
 
   getHotelInfo() {
@@ -116,9 +115,7 @@ class HotelWidget extends React.Component {
         })}
     </div>
     )
-    
   }
-  
 }
 
 export default HotelWidget

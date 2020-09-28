@@ -14,7 +14,6 @@ function BookingItem(props) {
                 <div>Liczbę łóżek podwójnych: {item.doubleBedsCount}</div>
                 <div className="item__price">{item.totalPrice} zł</div>
             </div>
-            
         </div>
     )
 }
